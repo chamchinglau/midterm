@@ -10,10 +10,12 @@ export default class Product extends Component {
             description: '',
             category: '',
             quantity: 0,
-            price: 0.0
+            price: 0.0,
+            photo: null
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleFileChange = this.handleFileChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
     }
@@ -23,9 +25,16 @@ export default class Product extends Component {
         this.setState({ [name]: value });
     }
 
+    handleFileChange(e) {
+        this.setState({ photo: e.target.files[0] });
+    }
+
     handleSubmit(e) {
         e.preventDefault();
-        console.log("Form Submitted", this.state);
+        console.log("Form Submitted:", this.state);
+        if (this.state.photo) {
+            console.log("Uploaded File:", this.state.photo.name);
+        }
     }
 
     handleCancel() {
@@ -34,7 +43,8 @@ export default class Product extends Component {
             description: '',
             category: '',
             quantity: 0,
-            price: 0.0
+            price: 0.0,
+            photo: null
         });
         this.photoInput.current.value = "";
     }
@@ -99,7 +109,8 @@ export default class Product extends Component {
                         <input 
                             type="file" 
                             className="form-control"
-                            ref={this.photoInput} 
+                            ref={this.photoInput}
+                            onChange={this.handleFileChange} 
                         />
                     </div>
                     <button type="submit" className="btn btn-primary">Submit</button>
