@@ -4,73 +4,60 @@ export default class Shop extends Component {
     constructor(props) {
         super(props);
 
-        this.initialState = {
-            name: '',
-            description: '',
-            logo: null
-        };
+        // Create ref for file input
+        this.logoInput = React.createRef();
 
-        this.state = this.initialState;
+        this.state = {
+            name: '',
+            description: ''
+        };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
     }
 
-    handleChange(event) {
-        const { name, value, type, files } = event.target;
-        if (type === "file") {
-            this.setState({ [name]: files[0] });
-        } else {
-            this.setState({ [name]: value });
-        }
+    handleChange(e) {
+        const { name, value } = e.target;
+        this.setState({ [name]: value });
     }
 
-    handleSubmit(event) {
-        event.preventDefault();
-        console.log(this.state);
-        // Add submission logic here
+    handleSubmit(e) {
+        e.preventDefault();
+        console.log("Form Submitted", this.state);
+        // Add here your submit logic
     }
 
     handleCancel() {
-        this.setState(this.initialState);
+        this.setState({ name: '', description: '' });
+        this.logoInput.current.value = ""; // Reset file input
     }
 
     render() {
         return (
             <div>
-                <h3>Create New Shop</h3>
+                <h2>New Shop</h2>
                 <form onSubmit={this.handleSubmit}>
-                    <div className="form-group">
-                        <label>Name:</label>
-                        <input 
-                            type="text" 
-                            className="form-control" 
-                            name="name"
-                            value={this.state.name} 
-                            onChange={this.handleChange} 
-                        />
+                    <div className="form-control" >
+                        <label>
+                            Name:
+                            <input type="text" name="name" className="form-control" value={this.state.name} onChange={this.handleChange} />
+                        </label>
                     </div>
-                    <div className="form-group">
-                        <label>Description:</label>
-                        <textarea 
-                            className="form-control" 
-                            name="description"
-                            value={this.state.description} 
-                            onChange={this.handleChange} 
-                        />
+                    <div className="form-control" >
+                        <label>
+                            Description:
+                            <textarea name="description" className="form-control" value={this.state.description} onChange={this.handleChange} />
+                        </label>
                     </div>
-                    <div className="form-group">
-                        <label>Logo:</label>
-                        <input 
-                            type="file" 
-                            className="form-control" 
-                            name="logo"
-                            onChange={this.handleChange} 
-                        />
+                    <div className="form-control">
+                        <label>
+                            Logo:
+                            <input type="file" ref={this.logoInput} />
+                        </label>
                     </div>
-                    <button type="submit" className="btn btn-primary">Submit</button>
-                    <button type="button" className="btn btn-secondary" onClick={this.handleCancel}>Cancel</button>
+                    <button type="submit">Submit</button>
+                    <button type="button" onClick={this.handleCancel}>Cancel</button>
                 </form>
             </div>
         );
